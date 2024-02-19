@@ -7,26 +7,6 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-# class Person(Base):
-#     __tablename__ = 'person'
-#     # Here we define columns for the table person
-#     # Notice that each column is also a normal Python instance attribute.
-#     id = Column(Integer, primary_key=True)
-#     name = Column(String(250), nullable=False)
-
-# class Address(Base):
-#     __tablename__ = 'address'
-#     # Here we define columns for the table address.
-#     # Notice that each column is also a normal Python instance attribute.
-#     id = Column(Integer, primary_key=True)
-#     street_name = Column(String(250))
-#     street_number = Column(String(250))
-#     post_code = Column(String(250), nullable=False)
-#     person_id = Column(Integer, ForeignKey('person.id'))
-#     person = relationship(Person)
-
-#     def to_dict(self):
-#         return {}
 
 class User(Base):
     __tablename__ = 'users'
@@ -44,7 +24,7 @@ class Follower(Base):
      ID = Column(Integer, primary_key=True, nullable=False)
      user_from_id = Column(Integer, ForeignKey('users.id'), nullable=False)
      user_to_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-
+     users = relationship(User)
      def to_dict(self):
             return {}
 
@@ -53,7 +33,7 @@ class Post(Base):
     __tablename__ = 'posts'
     id = Column(Integer, primary_key=True, nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'))
-
+    users = relationship(User)
     def to_dict(self):
             return {}
 
@@ -63,7 +43,7 @@ class Media(Base):
     type = Column(Enum, nullable=False)
     url = Column(String, nullable=False)
     post_id = Column(Integer, ForeignKey('posts.id'))
-
+    posts = relationship(Post)
     def to_dict(self):
             return {}
 
@@ -73,7 +53,8 @@ class Comment(Base):
     comment_text = Column(String(250), nullable=False)
     author_id = Column(Integer, ForeignKey('users.id'))
     post_id = Column(Integer, ForeignKey('posts.id'))
-
+    users = relationship(User)
+    posts = relationship(Post)
     def to_dict(self):
             return {}
 
